@@ -97,13 +97,13 @@ public class FBMapper {
         try {
             ResultSet res = pselectplanes.executeQuery();
             while (res.next()) {
-                String code = res.getString(1);
-                String titel = res.getString(2);
-                String label = res.getString(3);
-                int jaar = res.getInt(4);
-                String genre = res.getString(5);
-                CD cd = new CD(code, titel, label, jaar, genre);
-                cds.add(cd);
+                String name = res.getString(1);
+                int weight = res.getInt(2);
+                String remarks = res.getString(3);
+                //int jaar = res.getInt(4);
+                //String genre = res.getString(5);
+                Plane plane = new Plane(name, weight, remarks);
+                planes.add(plane);
             }
         }
         catch (SQLException e) {
