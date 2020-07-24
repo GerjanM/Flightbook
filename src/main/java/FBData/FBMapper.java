@@ -1,6 +1,7 @@
 package FBData;
 
 
+import FB.Plane;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import FB.Plane;
+
 
 
 public class FBMapper {
@@ -97,9 +98,9 @@ public class FBMapper {
         try {
             ResultSet res = pselectplanes.executeQuery();
             while (res.next()) {
-                String name = res.getString(1);
-                int weight = res.getInt(2);
-                String remarks = res.getString(3);
+                String name = res.getString(2);
+                int weight = res.getInt(3);
+                String remarks = res.getString(4);
                 //int jaar = res.getInt(4);
                 //String genre = res.getString(5);
                 Plane plane = new Plane(name, weight, remarks);
