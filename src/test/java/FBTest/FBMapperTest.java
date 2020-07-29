@@ -2,9 +2,10 @@ package FBTest;
 
 import java.util.ArrayList;
 
+import FBDomein.Flightbook;
 import FBData.FBException;
 import FBData.FBMapper;
-import FB.Plane;
+import FBDomein.Plane;
 
 /**
  * DIverse testjes om te kijken of het ophalen van gegevens uit de database
@@ -15,11 +16,19 @@ import FB.Plane;
  */
 public class FBMapperTest {
     public static void main(String[] args) throws FBException {
+        Flightbook FB = new Flightbook();
         FBMapper mapper = new FBMapper();
-        ArrayList<Plane> planes = mapper.leesAllePlanes();
-        Plane plane = planes.get(0);
-        System.out.println("1" + plane);
-        System.out.println(plane.getName()+plane.getRemarks()+plane.getWeight());
+        ArrayList<String[]> vliegtuigen = mapper.leesAllePlanes();
+        String[] plane = vliegtuigen.get(0);
+        System.out.println(plane[0]);
+
+        ArrayList<Plane> vliegtuigen2 = FB.getPlanes();
+        for (Plane vlgt:vliegtuigen2) {
+            System.out.println("naam: "+ vlgt.getName()+" gewicht: "+ vlgt.getWeight()+ " remarks: " + vlgt.getRemarks());
+        }
+
+
+        //System.out.println(plane.getName()+plane.getRemarks()+plane.getWeight());
         //System.out.println("2" + vestiging.getPlaats());
 
         //ArrayList<Klant> klanten = mapper.leesKlanten();

@@ -1,4 +1,4 @@
-package FB;
+package FBDomein;
 
 public class Motor {
 }

@@ -1,7 +1,6 @@
 package FBData;
 
 
-import FB.Plane;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,6 +16,9 @@ public class FBMapper {
     private PreparedStatement pselectplanes = null;
     //private PreparedStatement pselecttracks = null;
     private Connection con = null; // verbinding met gegevensbank
+
+    public ArrayList<String[]> selectPlanes = new ArrayList<>();
+
 
     /**
      * Maakt verbinding met de database
@@ -93,24 +95,26 @@ public class FBMapper {
      * @return alle CD-objecten zonder de bijbehorende tracks
      * @throws FBException
      */
-    public ArrayList<Plane> leesAllePlanes() throws FBException {
-        ArrayList<Plane> planes = new ArrayList<>();
+    public ArrayList<String[]> leesAllePlanes() throws FBException {
+        //ArrayList<Plane> planes = new ArrayList<>();
+
         try {
             ResultSet res = pselectplanes.executeQuery();
             while (res.next()) {
-                String name = res.getString(2);
-                int weight = res.getInt(3);
-                String remarks = res.getString(4);
+                String[] plane = new String[3];
+                plane[0] = res.getString(2);
+                plane[1] = res.getString(3);
+                plane[2] = res.getString(4);
                 //int jaar = res.getInt(4);
                 //String genre = res.getString(5);
-                Plane plane = new Plane(name, weight, remarks);
-                planes.add(plane);
+                //Plane plane = new Plane(name, weight, remarks);
+                selectPlanes.add(plane);
             }
         }
         catch (SQLException e) {
             throw new FBException("Fout bij het inlezen van de Planes.");
         }
-        return planes;
+        return selectPlanes;
     }
 
     /**
