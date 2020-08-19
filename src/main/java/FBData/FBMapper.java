@@ -1,6 +1,8 @@
 package FBData;
 
 
+import FBDomein.Flight;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -14,10 +16,10 @@ import java.util.ArrayList;
 public class FBMapper {
 
     private PreparedStatement pselectplanes = null;
-    //private PreparedStatement pselecttracks = null;
+    private PreparedStatement pselectflights = null;
     private Connection con = null; // verbinding met gegevensbank
 
-    public ArrayList<String[]> selectPlanes = new ArrayList<>();
+    private ArrayList<String[]> selectPlanes = new ArrayList<>();
 
 
     /**
@@ -58,7 +60,7 @@ public class FBMapper {
     /**
      * Sluit de verbinding met de database.
      */
-    public void sluitVerbinding() {
+    private void sluitVerbinding() {
         if (con != null) {
             try {
                 con.close();
@@ -80,7 +82,7 @@ public class FBMapper {
     private void initialiseerPrepStatements() throws FBException {
         try {
             pselectplanes = con.prepareStatement("SELECT * FROM plane");
-            //pselecttracks = con.prepareStatement("SELECT * FROM Track WHERE cd = ?");
+            pselectflights = con.prepareStatement("SELECT * FROM flight WHERE plane = ?");
         }
         catch (SQLException e) {
             //als er nu een fout optreedt, moet de verbinding eerst gesloten worden!
@@ -102,9 +104,9 @@ public class FBMapper {
             ResultSet res = pselectplanes.executeQuery();
             while (res.next()) {
                 String[] plane = new String[3];
-                plane[0] = res.getString(2);
-                plane[1] = res.getString(3);
-                plane[2] = res.getString(4);
+                plane[0] = res.getString(2); //name
+                plane[1] = res.getString(3); //remarks
+                plane[2] = res.getString(4); //weight
                 //int jaar = res.getInt(4);
                 //String genre = res.getString(5);
                 //Plane plane = new Plane(name, weight, remarks);
@@ -118,31 +120,38 @@ public class FBMapper {
     }
 
     /**
-     * Geeft tracks bij een gegeven cd
-     * @param cd de cd
-     * @return de tracks bij de cd
-     * @throws CDException
+     * Geeft vluchten bij een gegeven plane
+     * @param planename
+     * @return de vluchten bij de plane
+     * @throws FBException
      */
 
-  /*
-  public ArrayList<Track> leesTracks(CD cd) throws CDException {
-    ArrayList<Track> tracks = new ArrayList<>();
+
+  public ArrayList<String[]> getFlights(String planename) throws FBException {
+    ArrayList<String[]> flights = new ArrayList<>();
     try {
-      pselecttracks.setString(1, cd.getCode());
-      ResultSet res = pselecttracks.executeQuery();
+      pselectflights.setString(1, planename);
+      ResultSet res = pselectflights.executeQuery();
       while (res.next()) {
-        int nr = res.getInt(3);
-        String titel = res.getString(4);
-        String artiest = res.getString(5);
-        tracks.add(new Track(nr, titel, artiest));
+          String[] flight = new String[8];
+          flight[0] = ""+ (res.getInt(1));//nr
+          flight[1] = res.getString(2);//accu
+          flight[2] = res.getString(3);//date
+          flight[3] = res.getString(4);//height
+          flight[4] = res.getString(5);//motor
+          flight[5] = res.getString(6);//plane
+          flight[6] = res.getString(7);//remarks
+          flight[7] = res.getString(8);//time
+          flights.add(flight);
+
       }
     }
     catch (SQLException e) {
-      throw new FBException("Fout bij het inlezen van de tracks van een cd.");
+      throw new FBException("Fout bij het inlezen van de vluchten van een vliegtuig.");
     }
-    return tracks;
+    return flights;
   }
 
-  */
+
 
 }

@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import static java.lang.Integer.parseInt;
 
 public class Flightbook {
-    FBMapper fbMap = new FBMapper();
-    ArrayList<Plane> planes = new ArrayList<>();
+    private FBMapper fbMap = new FBMapper();
+    private ArrayList<Plane> planes = new ArrayList<>();
     ArrayList<Accu> accus = new ArrayList<>();
     ArrayList<Motor> motors = new ArrayList<>();
 
@@ -25,4 +25,16 @@ public class Flightbook {
         return planes;
     }
 
+
+
+    public ArrayList<Flight> getFlights(Plane name) throws FBException {
+        Plane plane = null;
+        for (Plane p:planes) {
+            if (name.equals(p.getName())) {
+            plane=p;
+            }
+        }
+        return plane.getFlights(name);
+
+    }
 }
